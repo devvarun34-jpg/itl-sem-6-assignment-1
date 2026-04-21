@@ -1,7 +1,5 @@
 name: CI/CD Pipeline
 
-# Updated with all v4 actions
-
 on:
   push:
     branches:
@@ -24,7 +22,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
@@ -38,14 +36,6 @@ jobs:
       
       - name: Run tests
         run: npm test
-      
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./coverage/coverage-final.json
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
 
   build:
     needs: test
@@ -71,15 +61,13 @@ jobs:
         run: |
           mkdir -p dist
           cp app.js package.json dist/
-          [ -f package-lock.json ] && cp package-lock.json dist/ || true
-          echo "Build artifacts created successfully"
-      
+          echo "Build completed"
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: dist/
-          retention-days: 30
 
   security:
     runs-on: ubuntu-latest
@@ -117,11 +105,4 @@ jobs:
           path: dist/
       
       - name: Deploy to production
-        run: |
-          echo "Deploying to production..."
-          echo "This step would deploy your application to your hosting provider"
-          echo "Examples: Vercel, Heroku, AWS, Azure, DigitalOcean, etc."
-      
-      - name: Notify deployment
-        if: success()
-        run: echo "Deployment completed successfully! 🚀"
+        run: echo "Deploying to production..."
