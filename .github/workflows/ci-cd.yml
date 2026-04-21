@@ -68,7 +68,9 @@ jobs:
       - name: Create build artifacts
         run: |
           mkdir -p dist
-          cp -r app.js package.json package-lock.json dist/
+          cp app.js package.json dist/
+          if [ -f package-lock.json ]; then cp package-lock.json dist/; fi
+          cp -r node_modules dist/node_modules || true
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
