@@ -69,8 +69,8 @@ jobs:
         run: |
           mkdir -p dist
           cp app.js package.json dist/
-          if [ -f package-lock.json ]; then cp package-lock.json dist/; fi
-          cp -r node_modules dist/node_modules || true
+          [ -f package-lock.json ] && cp package-lock.json dist/ || true
+          echo "Build artifacts created successfully"
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
