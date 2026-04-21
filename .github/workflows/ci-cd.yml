@@ -1,5 +1,7 @@
 name: CI/CD Pipeline
 
+# Updated with all v4 actions
+
 on:
   push:
     branches:
